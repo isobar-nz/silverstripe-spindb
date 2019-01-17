@@ -20,5 +20,10 @@
             "dev-master": "1.x-dev"
         }
     },
+    "autoload": {
+        "psr-4": {
+            "LittleGiant\\SpinDB\\": "src/"
+        }
+    },
     "minimum-stability": "dev"
 }
