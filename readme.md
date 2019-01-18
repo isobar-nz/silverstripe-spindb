@@ -77,10 +77,10 @@ SPINDB_PATH="{baseurl}/db_{date}{ext}"
 ```
 
 Supported vars:
- - {baseurl} Value of `BASE_URL` var
- - {date} Date the archive was created (ISO_8601)
- - {time} Time the archive was created (ISO_8601)
- - {ext} File extension created, e.g. `.sql` or `.zip` depending on archive method
+ - `{baseurl}` Value of `BASE_URL` var
+ - `{date}` Date the archive was created (ISO_8601)
+ - `{time}` Time the archive was created (ISO_8601)
+ - `{ext}` File extension created, e.g. `.sql` or `.zip` depending on archive method
 
 ## Schedule / rotation configuration
 
@@ -106,7 +106,7 @@ SPINDB_KEEP_WEEKLY="0" # Default to no weekly backups
 SPINDB_KEEP_WEEKLY_DAY="0" # If keeping weekly backups set the day of the week to keep (0 = sunday, 1 = monday, etc).
 SPINDB_KEEP_MONTHLY="4" # Default to 4 months of monthly backups
 SPINDB_KEEP_MONTHLY_DAY="1" # Day of the month to keep. Archaic 1-based index sorry.
-SPINDB_KEEP_YEARLY="-1" # Default to keep at least one yearly backup
+SPINDB_KEEP_YEARLY="-1" # Default to keep unlimited yearly backups.
 SPINDB_KEEP_YEARLY_DAY="1" # Day of the year to keep. 1-365.
 SPINDB_ARCHIVE="zip" # Set archive mode. Supports `zip` / `none`
 ```
