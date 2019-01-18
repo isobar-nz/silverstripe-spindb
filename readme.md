@@ -28,7 +28,7 @@ This default schedule can be tweaked via config
  - Your web server has limited disk space 
  - Your website has a huge database
  - You need professional archival / SLA storage and backup requirements
- - Late-night downtime would cause significant issues
+ - Late-night performance degradation could cause significant issues
  
 ## Installation
 
