@@ -52,7 +52,7 @@ AWS_PROFILE="default" # Optional
 ```
 
 Note: If you are running this site on AWS you can provide access via IAM instead, and you only need to
-specify the following.
+specify the following. This is the bare minimum configuration necessary for the module to run.
 
 ```dotenv
 AWS_S3_BUCKET="<thebucketname>"
@@ -87,13 +87,13 @@ Supported vars:
 You can configure the time of day that the task occurs, or even how frequently it runs.
 
 ```dotenv
-SPINDB_SCHEDULE="0 2 * * * *" # Every night at 2am
+SPINDB_SCHEDULE="0 2 * * *" # Every night at 2am
 ```
 
 If you want to backup less frequently you can adjust the day
 
 ```dotenv
-SPINDB_SCHEDULE="0 2 */2 * * *" # Every second night at 2am
+SPINDB_SCHEDULE="0 2 */2 * *" # Every second night at 2am
 ```
 
 You can configure the number of daily, weekly, monthly, and yearly backups
