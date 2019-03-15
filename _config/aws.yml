@@ -1,0 +1,6 @@
+---
+Name: spindb-aws
+---
+SilverStripe\Core\Injector\Injector:
+  Aws\S3\S3Client.spindb:
+    factory: LittleGiant\SpinDB\Storage\S3ClientFactory

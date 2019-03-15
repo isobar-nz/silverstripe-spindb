@@ -1,8 +1,11 @@
 <?php
 
-namespace Configuration;
+namespace LittleGiant\SpinDB\Configuration;
 
+use Exception;
 use InvalidArgumentException;
+use SilverStripe\Control\Director;
+use SilverStripe\Core\Convert;
 use SilverStripe\Core\Environment;
 
 class RotateConfig
@@ -10,6 +13,33 @@ class RotateConfig
     const METHOD_ZIP = 'zip';
 
     const METHOD_NONE = 'none';
+
+    /**
+     * Args that can be evaluated from the curernt path
+     *
+     * @return array
+     */
+    protected static function getFixedArgs()
+    {
+        return [
+            'basepath' => Convert::raw2htmlid(BASE_PATH),
+            'baseurl'  => Convert::raw2htmlid(parse_url(Director::absoluteBaseURL(), PHP_URL_HOST)),
+            'ext'      => '.' . self::archiveMethod(),
+        ];
+    }
+
+    /**
+     * Get all variable arguments and their respective patterns
+     *
+     * @return array
+     */
+    protected static function getVariableArgPatterns()
+    {
+        return [
+            'date' => '(?<date>\d{4}-\d{2}-\d{2})',
+            'time' => '(?<time>\d{2}[.]\d{2}[.]\d{2})',
+        ];
+    }
 
     /**
      * Get schedule
@@ -26,12 +56,14 @@ class RotateConfig
      *
      * @param array $arguments Optional arguments to substitute.
      * @return string
+     * @throws Exception
      */
     public static function path($arguments = [])
     {
+        $arguments = array_merge(self::getFixedArgs(), $arguments);
         $pattern = Environment::getEnv('SPINDB_PATH') ?: '{baseurl}/db_{date}{ext}';
-        if (empty($arguments)) {
-            return $pattern;
+        if (!strstr($pattern, '{date}')) {
+            throw new Exception('SPINDB_PATH variable must contain {date}');
         }
 
         // Substitutions
@@ -43,6 +75,38 @@ class RotateConfig
         }
 
         return str_replace($replace, $with, $pattern);
+    }
+
+    /**
+     * Parse s3 key into date / time parts.
+     *
+     * @param string $path
+     * @return array|false
+     * @throws Exception
+     */
+    public static function parse($path)
+    {
+        // Get path as an expression, adding in variables as matching groups
+        $basePattern = self::path();
+        $patterns = self::getVariableArgPatterns();
+        $pattern = '#' . preg_quote($basePattern, '#') . '#';
+        foreach ($patterns as $name => $value) {
+            $pattern = str_replace(preg_quote("{{$name}}", '#'), $value, $pattern);
+        }
+
+        // Match path against the pattern we've just built
+        if (!preg_match($pattern, $path, $matches)) {
+            return false;
+        }
+
+        // Return array of matched parts
+        $result = [];
+        foreach ($patterns as $name => $value) {
+            if (isset($matches[$name])) {
+                $result[$name] = $matches[$name];
+            }
+        }
+        return $result;
     }
 
     /**
@@ -103,7 +167,7 @@ class RotateConfig
     {
         return Environment::getEnv('SPINDB_AWS_PROFILE')
             ?: Environment::getEnv('AWS_PROFILE')
-                ?: 'default';
+                ?: null;
     }
 
     /**
