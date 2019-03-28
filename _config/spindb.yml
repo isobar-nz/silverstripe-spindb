@@ -1,0 +1,10 @@
+---
+Name: spindb
+---
+SilverStripe\Core\Injector\Injector:
+  Spatie\DbDumper\DbDumper:
+    factory: LittleGiant\SpinDB\Database\DBDumperFactory
+  LittleGiant\SpinDB\Database\Dumper:
+    class: LittleGiant\SpinDB\Database\DBDumperDumper
+    properties:
+      Backend: '%$Spatie\DbDumper\DbDumper'
