@@ -56,6 +56,21 @@ class DBBackup
     }
 
     /**
+     * Get combined date / time
+     *
+     * @return string
+     */
+    public function getDateTime()
+    {
+        $date = $this->getDate();
+        $time = $this->getTime();
+        if ($time) {
+            return "{$date} {$time}";
+        }
+        return $date;
+    }
+
+    /**
      * Build AWS key this backup corresponds to
      *
      * @return string

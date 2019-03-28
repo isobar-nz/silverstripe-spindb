@@ -7,7 +7,8 @@
         "silverstripe/framework": "^4.1",
         "silverstripe/vendor-plugin": "^1.0",
         "silverstripe/crontask": "^2.1",
-        "aws/aws-sdk-php": "^3.69"
+        "aws/aws-sdk-php": "^3.69",
+        "silverstripe/environmentcheck": "^2.0"
     },
     "authors": [
         {
