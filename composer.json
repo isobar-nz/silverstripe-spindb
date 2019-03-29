@@ -28,8 +28,8 @@
         }
     },
     "scripts": {
-        "lint": "phpcs src/",
-        "lint-clean": "phpcbf src/"
+        "lint": "phpcs --standard=PSR2 src/",
+        "lint-clean": "phpcbf --standard=PSR2 src/"
     },
     "minimum-stability": "dev"
 }
