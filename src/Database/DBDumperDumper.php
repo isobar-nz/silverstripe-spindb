@@ -33,6 +33,7 @@ class DBDumperDumper implements Dumper
      */
     public function dumpToFile($file)
     {
-        // TODO: Implement dumpToFile() method.
+        $this->getBackend()->dumpToFile($file);
+        return $this;
     }
 }

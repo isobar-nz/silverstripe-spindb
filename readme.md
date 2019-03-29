@@ -103,12 +103,12 @@ For each of the below, 0 means keep no backups, -1 means keep unlimited backups 
 ```dotenv
 SPINDB_KEEP_DAILY="7" # Default to 1 week of backups
 SPINDB_KEEP_WEEKLY="0" # Default to no weekly backups
-SPINDB_KEEP_WEEKLY_DAY="0" # If keeping weekly backups set the day of the week to keep (0 = sunday, 1 = monday, etc).
+SPINDB_KEEP_WEEKLY_DAY="0" # If keeping weekly backups set the day of the week to keep (0/7 = sunday, 1 = monday, etc).
 SPINDB_KEEP_MONTHLY="4" # Default to 4 months of monthly backups
 SPINDB_KEEP_MONTHLY_DAY="1" # Day of the month to keep. Archaic 1-based index sorry.
 SPINDB_KEEP_YEARLY="-1" # Default to keep unlimited yearly backups.
-SPINDB_KEEP_YEARLY_DAY="1" # Day of the year to keep. 1-365.
-SPINDB_ARCHIVE="zip" # Set archive mode. Supports `zip` / `none`
+SPINDB_KEEP_YEARLY_DAY="0" # Day of the year to keep. 0-365. (0 is Jan 1)
+SPINDB_ARCHIVE="gzip" # Set archive mode. Supports `gzip` / `none`
 ```
 
 You can also configure an alert email to notify when a backup is created.

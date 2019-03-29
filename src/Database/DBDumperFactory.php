@@ -3,8 +3,10 @@
 namespace LittleGiant\SpinDB\Database;
 
 use InvalidArgumentException;
+use LittleGiant\SpinDB\Configuration\RotateConfig;
 use SilverStripe\Core\Injector\Factory;
 use SilverStripe\ORM\DB;
+use Spatie\DbDumper\Compressors\GzipCompressor;
 use Spatie\DbDumper\Databases\MySql;
 use Spatie\DbDumper\Databases\PostgreSql;
 use Spatie\DbDumper\Databases\Sqlite;
@@ -29,6 +31,7 @@ class DBDumperFactory implements Factory
         $backend = $this->getBackend($args['type']);
 
         // Mandatory arguments
+        $backend->setDbName($args['database'] ?: '');
         $backend->setHost($args['server'] ?: '');
         $backend->setUserName($args['username'] ?: '');
         $backend->setPassword($args['password'] ?: '');
@@ -36,6 +39,11 @@ class DBDumperFactory implements Factory
         // Optional arguments
         if (isset($args['port'])) {
             $backend->setPort((int)$args['port']);
+        }
+
+        // Set compression (note: Only GZIP supported at the moment)
+        if (RotateConfig::archiveMethod() === RotateConfig::METHOD_GZIP) {
+            $backend->useCompressor(new GzipCompressor());
         }
 
         return $backend;

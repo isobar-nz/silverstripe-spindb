@@ -27,5 +27,9 @@
             "LittleGiant\\SpinDB\\": "src/"
         }
     },
+    "scripts": {
+        "lint": "phpcs src/",
+        "lint-clean": "phpcbf src/"
+    },
     "minimum-stability": "dev"
 }

@@ -3,28 +3,43 @@
 namespace LittleGiant\SpinDB\Configuration;
 
 use Exception;
-use InvalidArgumentException;
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Convert;
 use SilverStripe\Core\Environment;
+use SilverStripe\ORM\FieldType\DBDate;
+use SilverStripe\ORM\FieldType\DBDatetime;
 
 class RotateConfig
 {
-    const METHOD_ZIP = 'zip';
+    const METHOD_GZIP = 'gzip';
 
     const METHOD_NONE = 'none';
 
     /**
-     * Args that can be evaluated from the curernt path
+     * Args that can be evaluated from the current path.
+     * These should be consistent for all backups in this application.
      *
      * @return array
      */
-    protected static function getFixedArgs()
+    protected static function getFixedArgs(): array
     {
         return [
             'basepath' => Convert::raw2htmlid(BASE_PATH),
             'baseurl'  => Convert::raw2htmlid(parse_url(Director::absoluteBaseURL(), PHP_URL_HOST)),
-            'ext'      => '.' . self::archiveMethod(),
+            'ext'      => '.' . self::extension(),
+        ];
+    }
+
+    /**
+     * Get "now" args which represent a new backup.
+     *
+     * @return array
+     */
+    public static function getCurrentArgs(): array
+    {
+        return [
+            'date' => DBDatetime::now()->Format(DBDate::ISO_DATE),
+            'time' => DBDatetime::now()->Format('HH.mm.ss'),
         ];
     }
 
@@ -33,7 +48,7 @@ class RotateConfig
      *
      * @return array
      */
-    protected static function getVariableArgPatterns()
+    protected static function getVariableArgPatterns(): array
     {
         return [
             'date' => '(?<date>\d{4}-\d{2}-\d{2})',
@@ -46,7 +61,7 @@ class RotateConfig
      *
      * @return string Cron pattern
      */
-    public static function schedule()
+    public static function schedule(): string
     {
         return Environment::getEnv('SPINDB_SCHEDULE') ?: '0 2 * * *';
     }
@@ -58,7 +73,7 @@ class RotateConfig
      * @return string
      * @throws Exception
      */
-    public static function path($arguments = [])
+    public static function path($arguments = []): string
     {
         $arguments = array_merge(self::getFixedArgs(), $arguments);
         $pattern = Environment::getEnv('SPINDB_PATH') ?: '{baseurl}/db_{date}{ext}';
@@ -81,10 +96,10 @@ class RotateConfig
      * Parse s3 key into date / time parts.
      *
      * @param string $path
-     * @return array|false
+     * @return array|null
      * @throws Exception
      */
-    public static function parse($path)
+    public static function parse($path): ?array
     {
         // Get path as an expression, adding in variables as matching groups
         $basePattern = self::path();
@@ -96,7 +111,7 @@ class RotateConfig
 
         // Match path against the pattern we've just built
         if (!preg_match($pattern, $path, $matches)) {
-            return false;
+            return null;
         }
 
         // Return array of matched parts
@@ -115,7 +130,7 @@ class RotateConfig
      *
      * @return string|null
      */
-    public static function bucket()
+    public static function bucket(): ?string
     {
         return Environment::getEnv('SPINDB_AWS_S3_BUCKET')
             ?: Environment::getEnv('AWS_S3_BUCKET')
@@ -127,7 +142,7 @@ class RotateConfig
      *
      * @return string
      */
-    public static function region()
+    public static function region(): ?string
     {
         return Environment::getEnv('SPINDB_AWS_REGION')
             ?: Environment::getEnv('AWS_REGION')
@@ -139,7 +154,7 @@ class RotateConfig
      *
      * @return string
      */
-    public static function accesKeyID()
+    public static function accesKeyID(): ?string
     {
         return Environment::getEnv('SPINDB_AWS_ACCESS_KEY_ID')
             ?: Environment::getEnv('AWS_ACCESS_KEY_ID')
@@ -151,7 +166,7 @@ class RotateConfig
      *
      * @return string
      */
-    public static function secretAccessKey()
+    public static function secretAccessKey(): ?string
     {
         return Environment::getEnv('SPINDB_AWS_SECRET_ACCESS_KEY')
             ?: Environment::getEnv('AWS_SECRET_ACCESS_KEY')
@@ -163,7 +178,7 @@ class RotateConfig
      *
      * @return string
      */
-    public static function profile()
+    public static function profile(): ?string
     {
         return Environment::getEnv('SPINDB_AWS_PROFILE')
             ?: Environment::getEnv('AWS_PROFILE')
@@ -175,7 +190,7 @@ class RotateConfig
      *
      * @return int
      */
-    public static function keepDaily()
+    public static function keepDaily(): int
     {
         return self::getNumeric('SPINDB_KEEP_DAILY', 7);
     }
@@ -185,7 +200,7 @@ class RotateConfig
      *
      * @return int
      */
-    public static function keepWeekly()
+    public static function keepWeekly(): int
     {
         return self::getNumeric('SPINDB_KEEP_WEEKLY', 0);
     }
@@ -195,7 +210,7 @@ class RotateConfig
      *
      * @return int
      */
-    public static function keepWeeklyDay()
+    public static function keepWeeklyDay(): int
     {
         return self::getNumeric('SPINDB_KEEP_WEEKLY_DAY', 0);
     }
@@ -205,7 +220,7 @@ class RotateConfig
      *
      * @return int
      */
-    public static function keepMonthly()
+    public static function keepMonthly(): int
     {
         return self::getNumeric('SPINDB_KEEP_MONTHLY', 4);
     }
@@ -215,7 +230,7 @@ class RotateConfig
      *
      * @return int
      */
-    public static function keepMonthlyDay()
+    public static function keepMonthlyDay(): int
     {
         return self::getNumeric('SPINDB_KEEP_MONTHLY_DAY', 1);
     }
@@ -225,7 +240,7 @@ class RotateConfig
      *
      * @return int
      */
-    public static function keepYearly()
+    public static function keepYearly(): int
     {
         return self::getNumeric('SPINDB_KEEP_YEARLY', -1);
     }
@@ -235,7 +250,7 @@ class RotateConfig
      *
      * @return int
      */
-    public static function keepYearlyDay()
+    public static function keepYearlyDay(): int
     {
         return self::getNumeric('SPINDB_KEEP_YEARLY', 1);
     }
@@ -247,7 +262,7 @@ class RotateConfig
      * @param int    $default Defaul value if $var isn't provided, or is non-integer
      * @return int
      */
-    protected static function getNumeric($var, $default)
+    protected static function getNumeric(string $var, int $default): int
     {
         $daily = Environment::getEnv($var);
         if (is_numeric($daily)) {
@@ -259,17 +274,30 @@ class RotateConfig
     /**
      * Get archive method to use
      *
-     * @return string
+     * @return string|null
      */
-    public static function archiveMethod()
+    public static function archiveMethod(): ?string
     {
-        $method = Environment::getEnv('SPINDB_ARCHIVE') ?: 'zip';
+        $method = Environment::getEnv('SPINDB_ARCHIVE');
         switch ($method) {
             case self::METHOD_NONE:
-            case self::METHOD_ZIP:
-                return $method;
+                return null;
+            case self::METHOD_GZIP:
             default:
-                throw new InvalidArgumentException("Invalid archive method {$method}");
+                return self::METHOD_GZIP;
         }
+    }
+
+    /**
+     * Get file extension to use (not including .)
+     *
+     * @return string
+     */
+    public static function extension(): string
+    {
+        $method = static::archiveMethod();
+        return $method
+            ? "sql.{$method}"
+            : 'sql';
     }
 }

@@ -2,6 +2,7 @@
 
 namespace LittleGiant\SpinDB\Storage;
 
+use Aws\Result;
 use Aws\S3\S3Client;
 use Exception;
 use LittleGiant\SpinDB\Configuration\RotateConfig;
@@ -63,7 +64,7 @@ class RotateStorage
         $client = $this->getClient();
         $prefix = $this->getPathFolder();
         $objects = $client->listObjects([
-            'Bucket' => RotateConfig::bucket(),
+            'Bucket' => $this->getBucket(),
             'Prefix' => $prefix,
         ]);
         $files = [];
@@ -74,5 +75,55 @@ class RotateStorage
             }
         }
         return $files;
+    }
+
+    /**
+     * Add a new backup to the store
+     *
+     * @param string $localPath Local path containing the file
+     * @param string $key Key to use
+     * @return Result
+     * @throws Exception
+     */
+    public function saveFile($localPath, $key)
+    {
+        // put file into bucket
+        $stream = fopen($localPath, 'r');
+        try {
+            return $this->getClient()->putObject([
+                'Bucket' => $this->getBucket(),
+                'Key'    => $key,
+                'Body'   => $stream,
+            ]);
+        } finally {
+            fclose($stream);
+        }
+    }
+
+    /**
+     * Remove object by key
+     *
+     * @param string $key
+     * @throws Exception
+     */
+    public function deleteFile($key)
+    {
+        $this->getClient()->deleteObject([
+            'Bucket' => $this->getBucket(),
+            'Key'    => $key,
+        ]);
+    }
+
+    /**
+     * @return string
+     * @throws Exception
+     */
+    protected function getBucket()
+    {
+        $bucket = RotateConfig::bucket();
+        if (empty($bucket)) {
+            throw new Exception("No S3 Bucket provided");
+        }
+        return $bucket;
     }
 }
