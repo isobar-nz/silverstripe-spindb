@@ -44,30 +44,27 @@ Configure access to your AWS bucket. The below environment variables should be c
 as env on your server, or in `.env` in your project root.
 
 ```dotenv
-AWS_S3_BUCKET="<thebucketname>"
-AWS_REGION="ap-southeast-2" # Or your aws region
-AWS_ACCESS_KEY_ID="<my-access-key>"
-AWS_SECRET_ACCESS_KEY="<my-secret>"
-AWS_PROFILE="default" # Optional
-```
-
-Note: If you are running this site on AWS you can provide access via IAM instead, and you only need to
-specify the following. This is the bare minimum configuration necessary for the module to run.
-
-```dotenv
-AWS_S3_BUCKET="<thebucketname>"
-AWS_REGION="ap-southeast-2" # Or your aws region
-```
-
-Note: If you are running multiple AWS applications on the same server and want to set environment variables
-that do not intefere with one another you can also override these variables with the `SPINDB_` prefix.
-
-```dotenv
 SPINDB_AWS_S3_BUCKET="<thebucketname>"
 SPINDB_AWS_REGION="ap-southeast-2" # Or your aws region
 SPINDB_AWS_ACCESS_KEY_ID="<my-access-key>"
 SPINDB_AWS_SECRET_ACCESS_KEY="<my-secret>"
-SPINDB_AWS_PROFILE="default" # Optional
+```
+
+If you want to authenticate via your local AWS credentials (Stored in `~/.aws/credentials`) then
+you can provide a profile name instead.
+
+```dotenv
+SPINDB_AWS_S3_BUCKET="<thebucketname>"
+SPINDB_AWS_REGION="ap-southeast-2" # Or your aws region
+SPINDB_AWS_PROFILE="profilename" # The profile name containing your authentication credentials. Can be `default`
+```
+
+If you are running this site on AWS you can provide access via IAM instead, and you only need to
+specify the following. This is the bare minimum configuration necessary for the module to run.
+
+```dotenv
+SPINDB_AWS_S3_BUCKET="<thebucketname>"
+SPINDB_AWS_REGION="ap-southeast-2" # Or your aws region
 ```
 
 By default DB backups are written to the `{baseurl}/db_{date}{ext}` path within the bucket, but this can be configured.

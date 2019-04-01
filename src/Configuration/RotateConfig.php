@@ -132,9 +132,7 @@ class RotateConfig
      */
     public static function bucket(): ?string
     {
-        return Environment::getEnv('SPINDB_AWS_S3_BUCKET')
-            ?: Environment::getEnv('AWS_S3_BUCKET')
-                ?: null;
+        return Environment::getEnv('SPINDB_AWS_S3_BUCKET') ?: null;
     }
 
     /**
@@ -144,9 +142,7 @@ class RotateConfig
      */
     public static function region(): ?string
     {
-        return Environment::getEnv('SPINDB_AWS_REGION')
-            ?: Environment::getEnv('AWS_REGION')
-                ?: null;
+        return Environment::getEnv('SPINDB_AWS_REGION') ?: null;
     }
 
     /**
@@ -156,9 +152,7 @@ class RotateConfig
      */
     public static function accesKeyID(): ?string
     {
-        return Environment::getEnv('SPINDB_AWS_ACCESS_KEY_ID')
-            ?: Environment::getEnv('AWS_ACCESS_KEY_ID')
-                ?: null;
+        return Environment::getEnv('SPINDB_AWS_ACCESS_KEY_ID') ?: null;
     }
 
     /**
@@ -168,21 +162,17 @@ class RotateConfig
      */
     public static function secretAccessKey(): ?string
     {
-        return Environment::getEnv('SPINDB_AWS_SECRET_ACCESS_KEY')
-            ?: Environment::getEnv('AWS_SECRET_ACCESS_KEY')
-                ?: null;
+        return Environment::getEnv('SPINDB_AWS_SECRET_ACCESS_KEY') ?: null;
     }
 
     /**
-     * AWS profile name to use. Defaults to 'default'
+     * AWS profile name to use if credentials are not provided explicitly.
      *
      * @return string
      */
     public static function profile(): ?string
     {
-        return Environment::getEnv('SPINDB_AWS_PROFILE')
-            ?: Environment::getEnv('AWS_PROFILE')
-                ?: null;
+        return Environment::getEnv('SPINDB_AWS_PROFILE') ?: null;
     }
 
     /**
