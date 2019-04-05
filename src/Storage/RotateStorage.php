@@ -68,10 +68,13 @@ class RotateStorage
             'Prefix' => $prefix,
         ]);
         $files = [];
-        foreach ($objects->get('Contents') as $object) {
-            $parts = RotateConfig::parse($object['Key']);
-            if ($parts) {
-                $files[] = new DBBackup($parts);
+        $objects = $objects->get('Contents');
+        if ($objects) {
+            foreach ($objects as $object) {
+                $parts = RotateConfig::parse($object['Key']);
+                if ($parts) {
+                    $files[] = new DBBackup($parts);
+                }
             }
         }
         return $files;
