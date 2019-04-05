@@ -58,6 +58,7 @@ class DBDumperFactory implements Factory
         // Get backend to dump
         switch ($type) {
             case 'MySQLPDODatabase':
+            case 'MySQLDatabase':
             case 'MyPDODatabase':
                 return MySql::create();
             case 'SQLite3PDODatabase':
