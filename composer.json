@@ -1,5 +1,6 @@
 {
     "name": "littlegiant/silverstripe-spindb",
+    "type": "silverstripe-module",
     "license": "BSD-3-Clause",
     "description": "Backup DB periodically and backup to AWS S3 storage with rotation",
     "require": {
