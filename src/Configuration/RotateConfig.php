@@ -34,8 +34,8 @@ class RotateConfig
     public static function getCurrentArgs(): array
     {
         return [
-            'date' => SS_Datetime::now()->Format('y-MM-dd'),
-            'time' => SS_Datetime::now()->Format('HH.mm.ss'),
+            'date' => SS_Datetime::now()->Format('Y-m-d'),
+            'time' => SS_Datetime::now()->Format('H.i.s'),
         ];
     }
 
@@ -109,6 +109,7 @@ class RotateConfig
         if (!preg_match($pattern, $path, $matches)) {
             return null;
         }
+
 
         // Return array of matched parts
         $result = [];

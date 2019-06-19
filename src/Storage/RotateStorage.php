@@ -4,7 +4,9 @@ namespace LittleGiant\SpinDB\Storage;
 
 use Aws\Result;
 use Aws\S3\S3Client;
+use Debug;
 use Exception;
+use Injector;
 use LittleGiant\SpinDB\Configuration\RotateConfig;
 use Object;
 
@@ -66,7 +68,9 @@ class RotateStorage extends Object
         ]);
         $files = [];
         $objects = $objects->get('Contents');
-        if ($objects) {
+
+        if (!empty($objects)) {
+
             foreach ($objects as $object) {
                 $parts = RotateConfig::parse($object['Key']);
                 if ($parts) {

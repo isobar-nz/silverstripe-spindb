@@ -1,6 +1,5 @@
 {
     "name": "littlegiant/silverstripe-spindb",
-    "type": "silverstripe-vendormodule",
     "license": "BSD-3-Clause",
     "description": "Backup DB periodically and backup to AWS S3 storage with rotation",
     "require": {
@@ -18,12 +17,7 @@
     ],
     "extra": {
         "branch-alias": {
-            "dev-master": "1.x-dev"
-        }
-    },
-    "autoload": {
-        "psr-4": {
-            "LittleGiant\\SpinDB\\": "src/"
+            "dev-ss3": "dev-ss3.x-compat"
         }
     },
     "scripts": {

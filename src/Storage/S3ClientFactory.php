@@ -5,6 +5,7 @@ namespace LittleGiant\SpinDB\Storage;
 use Aws\Credentials\Credentials;
 use Aws\S3\S3Client;
 use LittleGiant\SpinDB\Configuration\RotateConfig;
+use SilverStripe\Framework\Injector\Factory;
 
 class S3ClientFactory implements Factory
 {
