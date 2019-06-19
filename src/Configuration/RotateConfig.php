@@ -3,16 +3,12 @@
 namespace LittleGiant\SpinDB\Configuration;
 
 use Exception;
-use SilverStripe\Control\Director;
-use SilverStripe\Core\Convert;
-use SilverStripe\Core\Environment;
-use SilverStripe\ORM\FieldType\DBDate;
-use SilverStripe\ORM\FieldType\DBDatetime;
+use Director;
+use Convert;
+use SS_Datetime;
 
 class RotateConfig
 {
-    const METHOD_GZIP = 'gzip';
-
     const METHOD_NONE = 'none';
 
     /**
@@ -38,8 +34,8 @@ class RotateConfig
     public static function getCurrentArgs(): array
     {
         return [
-            'date' => DBDatetime::now()->Format(DBDate::ISO_DATE),
-            'time' => DBDatetime::now()->Format('HH.mm.ss'),
+            'date' => SS_Datetime::now()->Format('y-MM-dd'),
+            'time' => SS_Datetime::now()->Format('HH.mm.ss'),
         ];
     }
 
@@ -63,7 +59,7 @@ class RotateConfig
      */
     public static function schedule(): string
     {
-        return Environment::getEnv('SPINDB_SCHEDULE') ?: '0 2 * * *';
+        return defined('SPINDB_SCHEDULE') ? SPINDB_SCHEDULE : '0 2 * * *';
     }
 
     /**
@@ -76,7 +72,7 @@ class RotateConfig
     public static function path($arguments = []): string
     {
         $arguments = array_merge(self::getFixedArgs(), $arguments);
-        $pattern = Environment::getEnv('SPINDB_PATH') ?: '{baseurl}/db_{date}{ext}';
+        $pattern = defined('SPINDB_PATH') ? SPINDB_PATH : '{baseurl}/db_{date}{ext}';
         if (!strstr($pattern, '{date}')) {
             throw new Exception('SPINDB_PATH variable must contain {date}');
         }
@@ -132,7 +128,7 @@ class RotateConfig
      */
     public static function bucket(): ?string
     {
-        return Environment::getEnv('SPINDB_AWS_S3_BUCKET') ?: null;
+        return defined('SPINDB_AWS_S3_BUCKET') ? SPINDB_AWS_S3_BUCKET : null;
     }
 
     /**
@@ -142,7 +138,7 @@ class RotateConfig
      */
     public static function region(): ?string
     {
-        return Environment::getEnv('SPINDB_AWS_REGION') ?: null;
+        return defined('SPINDB_AWS_REGION') ? SPINDB_AWS_REGION : null;
     }
 
     /**
@@ -152,7 +148,7 @@ class RotateConfig
      */
     public static function accesKeyID(): ?string
     {
-        return Environment::getEnv('SPINDB_AWS_ACCESS_KEY_ID') ?: null;
+        return defined('SPINDB_AWS_ACCESS_KEY_ID') ? SPINDB_AWS_ACCESS_KEY_ID : null;
     }
 
     /**
@@ -162,7 +158,7 @@ class RotateConfig
      */
     public static function secretAccessKey(): ?string
     {
-        return Environment::getEnv('SPINDB_AWS_SECRET_ACCESS_KEY') ?: null;
+        return defined('SPINDB_AWS_SECRET_ACCESS_KEY') ? SPINDB_AWS_SECRET_ACCESS_KEY : null;
     }
 
     /**
@@ -172,7 +168,7 @@ class RotateConfig
      */
     public static function profile(): ?string
     {
-        return Environment::getEnv('SPINDB_AWS_PROFILE') ?: null;
+        return defined('SPINDB_AWS_PROFILE') ? SPINDB_AWS_PROFILE : null;
     }
 
     /**
@@ -254,29 +250,13 @@ class RotateConfig
      */
     protected static function getNumeric(string $var, int $default): int
     {
-        $daily = Environment::getEnv($var);
+        $daily = defined($var) ? constant($var) : null;
         if (is_numeric($daily)) {
             return (int)$daily;
         }
         return $default;
     }
 
-    /**
-     * Get archive method to use
-     *
-     * @return string|null
-     */
-    public static function archiveMethod(): ?string
-    {
-        $method = Environment::getEnv('SPINDB_ARCHIVE');
-        switch ($method) {
-            case self::METHOD_NONE:
-                return null;
-            case self::METHOD_GZIP:
-            default:
-                return self::METHOD_GZIP;
-        }
-    }
 
     /**
      * Get file extension to use (not including .)
@@ -285,9 +265,6 @@ class RotateConfig
      */
     public static function extension(): string
     {
-        $method = static::archiveMethod();
-        return $method
-            ? "sql.{$method}"
-            : 'sql';
+        return 'sql';
     }
 }

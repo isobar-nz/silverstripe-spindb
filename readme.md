@@ -43,73 +43,72 @@ composer require littlegiant/silverstripe-spindb
 Configure access to your AWS bucket. The below environment variables should be configured either directly
 as env on your server, or in `.env` in your project root.
 
-```dotenv
-SPINDB_AWS_S3_BUCKET="<thebucketname>"
-SPINDB_AWS_REGION="ap-southeast-2" # Or your aws region
-SPINDB_AWS_ACCESS_KEY_ID="<my-access-key>"
-SPINDB_AWS_SECRET_ACCESS_KEY="<my-secret>"
+```php
+define('SPINDB_AWS_S3_BUCKET', '<thebucketname>');
+define('SPINDB_AWS_REGION', 'ap-southeast-2'); # Or your aws region
+define('SPINDB_AWS_ACCESS_KEY_ID', '<my-access-key>');
+define('SPINDB_AWS_SECRET_ACCESS_KEY', '<my-secret>');
 ```
 
 If you want to authenticate via your local AWS credentials (Stored in `~/.aws/credentials`) then
 you can provide a profile name instead.
 
-```dotenv
-SPINDB_AWS_S3_BUCKET="<thebucketname>"
-SPINDB_AWS_REGION="ap-southeast-2" # Or your aws region
-SPINDB_AWS_PROFILE="profilename" # The profile name containing your authentication credentials. Can be `default`
+```php
+define('SPINDB_AWS_S3_BUCKET', '<thebucketname>');
+define('SPINDB_AWS_REGION', 'ap-southeast-2'); # Or your aws region
+define('SPINDB_AWS_PROFILE', 'profilename'); # The profile name containing your authentication credentials. Can be `default`
 ```
 
 If you are running this site on AWS you can provide access via IAM instead, and you only need to
 specify the following. This is the bare minimum configuration necessary for the module to run.
 
-```dotenv
-SPINDB_AWS_S3_BUCKET="<thebucketname>"
-SPINDB_AWS_REGION="ap-southeast-2" # Or your aws region
+```php
+define('SPINDB_AWS_S3_BUCKET', '<thebucketname>');
+define('SPINDB_AWS_REGION', 'ap-southeast-2'); # Or your aws region
 ```
 
 By default DB backups are written to the `{baseurl}/db_{date}{ext}` path within the bucket, but this can be configured.
 
-```dotenv
-SPINDB_PATH="{baseurl}/db_{date}{ext}"
+```php
+define('SPINDB_PATH', '{baseurl}/db_{date}{ext}"
 ```
 
 Supported vars:
  - `{baseurl}` Value of `BASE_URL` var
  - `{date}` Date the archive was created (ISO_8601)
  - `{time}` Time the archive was created (ISO_8601)
- - `{ext}` File extension created, e.g. `.sql` or `.zip` depending on archive method
+ - `{ext}` File extension created, e.g. `.sql`
 
 ## Schedule / rotation configuration
 
 You can configure the time of day that the task occurs, or even how frequently it runs.
 
-```dotenv
-SPINDB_SCHEDULE="0 2 * * *" # Every night at 2am
+```php
+define('SPINDB_SCHEDULE', '0 2 * * *'); # Every night at 2am
 ```
 
 If you want to backup less frequently you can adjust the day
 
-```dotenv
-SPINDB_SCHEDULE="0 2 */2 * *" # Every second night at 2am
+```php
+define('SPINDB_SCHEDULE', '0 2 */2 * *'); # Every second night at 2am
 ```
 
 You can configure the number of daily, weekly, monthly, and yearly backups
 
 For each of the below, 0 means keep no backups, -1 means keep unlimited backups (use with care)
 
-```dotenv
-SPINDB_KEEP_DAILY="7" # Default to 1 week of backups
-SPINDB_KEEP_WEEKLY="0" # Default to no weekly backups
-SPINDB_KEEP_WEEKLY_DAY="0" # If keeping weekly backups set the day of the week to keep (0/7 = sunday, 1 = monday, etc).
-SPINDB_KEEP_MONTHLY="4" # Default to 4 months of monthly backups
-SPINDB_KEEP_MONTHLY_DAY="1" # Day of the month to keep. Archaic 1-based index sorry.
-SPINDB_KEEP_YEARLY="-1" # Default to keep unlimited yearly backups.
-SPINDB_KEEP_YEARLY_DAY="0" # Day of the year to keep. 0-365. (0 is Jan 1)
-SPINDB_ARCHIVE="gzip" # Set archive mode. Supports `gzip` / `none`
+```php
+define('SPINDB_KEEP_DAILY', '7'); # Default to 1 week of backups
+define('SPINDB_KEEP_WEEKLY', '0'); # Default to no weekly backups
+define('SPINDB_KEEP_WEEKLY_DAY', '0'); # If keeping weekly backups set the day of the week to keep (0/7 = sunday, 1 = monday, etc).
+define('SPINDB_KEEP_MONTHLY', '4'); # Default to 4 months of monthly backups
+define('SPINDB_KEEP_MONTHLY_DAY', '1'); # Day of the month to keep. Archaic 1-based index sorry.
+define('SPINDB_KEEP_YEARLY', '-1'); # Default to keep unlimited yearly backups.
+define('SPINDB_KEEP_YEARLY_DAY', '0'); # Day of the year to keep. 0-365. (0 is Jan 1)
 ```
 
 You can also configure an alert email to notify when a backup is created.
 
-```dotenv
-SPINDB_ALERT_EMAIL="webmaster@littlegiant.co.nz"
+```php
+define('SPINDB_ALERT_EMAIL', 'webmaster@littlegiant.co.nz');
 ```

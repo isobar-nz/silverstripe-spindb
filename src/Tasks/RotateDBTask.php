@@ -2,20 +2,20 @@
 
 namespace LittleGiant\SpinDB\Tasks;
 
+use BuildTask;
+use Controller;
+use Convert;
+use CronTask;
+use Director;
 use Exception;
+use Filesystem;
+use Injector;
 use LittleGiant\SpinDB\Configuration\RotateConfig;
 use LittleGiant\SpinDB\Database\Dumper;
 use LittleGiant\SpinDB\Storage\DBBackup;
 use LittleGiant\SpinDB\Storage\RotateStorage;
 use LittleGiant\SpinDB\Storage\TempPath;
-use SilverStripe\Assets\Filesystem;
-use SilverStripe\Control\Director;
-use SilverStripe\Control\HTTPRequest;
-use SilverStripe\Core\Convert;
-use SilverStripe\Core\Injector\Injector;
-use SilverStripe\Core\Path;
-use SilverStripe\CronTask\Interfaces\CronTask;
-use SilverStripe\Dev\BuildTask;
+use SS_HTTPRequest;
 
 class RotateDBTask extends BuildTask implements CronTask
 {
@@ -82,7 +82,7 @@ class RotateDBTask extends BuildTask implements CronTask
      * Implement this method in the task subclass to
      * execute via the TaskRunner
      *
-     * @param HTTPRequest $request
+     * @param SS_HTTPRequest $request
      * @throws Exception
      */
     public function run($request)
@@ -130,7 +130,7 @@ class RotateDBTask extends BuildTask implements CronTask
 
         // Build a new temporary folder to backup to
         $tempFolder = TempPath::tempdir();
-        $tempPath = Path::join($tempFolder, basename($uploadPath));
+        $tempPath = Controller::join_links($tempFolder, basename($uploadPath));
         try {
             // Dump the database
             /** @var Dumper $dumper */

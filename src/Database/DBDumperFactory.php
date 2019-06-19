@@ -3,13 +3,9 @@
 namespace LittleGiant\SpinDB\Database;
 
 use InvalidArgumentException;
-use LittleGiant\SpinDB\Configuration\RotateConfig;
-use SilverStripe\Core\Injector\Factory;
-use SilverStripe\ORM\DB;
-use Spatie\DbDumper\Compressors\GzipCompressor;
+use SilverStripe\Framework\Injector\Factory;
 use Spatie\DbDumper\Databases\MySql;
 use Spatie\DbDumper\Databases\PostgreSql;
-use Spatie\DbDumper\Databases\Sqlite;
 use Spatie\DbDumper\DbDumper;
 
 /**
@@ -27,7 +23,10 @@ class DBDumperFactory implements Factory
     public function create($service, array $params = array())
     {
         // Build class from type field
-        $args = DB::getConfig();
+
+        global $databaseConfig;
+
+        $args = $databaseConfig;
         $backend = $this->getBackend($args['type']);
 
         // Mandatory arguments
@@ -41,17 +40,12 @@ class DBDumperFactory implements Factory
             $backend->setPort((int)$args['port']);
         }
 
-        // Set compression (note: Only GZIP supported at the moment)
-        if (RotateConfig::archiveMethod() === RotateConfig::METHOD_GZIP) {
-            $backend->useCompressor(new GzipCompressor());
-        }
-
         return $backend;
     }
 
     /**
      * @param string $type
-     * @return DbDumper
+     * @return DbDumper|MySql|PostgreSql
      */
     protected function getBackend($type)
     {
@@ -65,7 +59,8 @@ class DBDumperFactory implements Factory
             case 'SQLite3Database':
             case 'SQLitePDODatabase':
             case 'SQLiteDatabase':
-                return Sqlite::create();
+                throw new InvalidArgumentException("{$type} is not supported");
+                break;
             case 'PostgrePDODatabase':
             case 'PostgreSQLDatabase':
                 return PostgreSql::create();

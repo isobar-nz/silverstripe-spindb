@@ -1,7 +1,7 @@
 ---
 Name: spindb
 ---
-SilverStripe\Core\Injector\Injector:
+Injector:
   Spatie\DbDumper\DbDumper:
     factory: LittleGiant\SpinDB\Database\DBDumperFactory
   LittleGiant\SpinDB\Database\Dumper:

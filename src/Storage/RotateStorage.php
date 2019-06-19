@@ -6,13 +6,10 @@ use Aws\Result;
 use Aws\S3\S3Client;
 use Exception;
 use LittleGiant\SpinDB\Configuration\RotateConfig;
-use SilverStripe\Core\Injector\Injectable;
-use SilverStripe\Core\Injector\Injector;
+use Object;
 
-class RotateStorage
+class RotateStorage extends Object
 {
-    use Injectable;
-
     /**
      * s3 client
      *

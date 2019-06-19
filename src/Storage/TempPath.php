@@ -15,7 +15,7 @@ class TempPath
     public static function tempdir($prefix = 'tmp_', $mode = 0700, $maxAttempts = 1000)
     {
         /* Trim trailing slashes from $dir. */
-        $dir = rtrim(TEMP_PATH, DIRECTORY_SEPARATOR);
+        $dir = rtrim(TEMP_FOLDER, DIRECTORY_SEPARATOR);
 
         /* If we don't have permission to create a directory, fail, otherwise we will
          * be stuck in an endless loop.

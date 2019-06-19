@@ -1,11 +1,11 @@
 ---
 Name: spindb-envcheck
 ---
-SilverStripe\EnvironmentCheck\EnvironmentCheckSuite:
+EnvironmentCheckSuite:
+  registered_suites:
+    health:
+      - spindb
   registered_checks:
     spindb:
       definition: 'LittleGiant\SpinDB\Health\BackupCheck'
       title: 'Is the database backup saving to S3 daily?'
-  registered_suites:
-    check:
-    - spindb
