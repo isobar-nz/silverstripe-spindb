@@ -16,6 +16,11 @@
             "email": "damian.mooyman@littlegiant.co.nz"
         }
     ],
+    "extra": {
+        "branch-alias": {
+            "dev-ss3": "0.5.x-dev"
+        }
+    },
     "scripts": {
         "lint": "phpcs --standard=PSR2 src/",
         "lint-clean": "phpcbf --standard=PSR2 src/"
