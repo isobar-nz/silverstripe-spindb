@@ -2,9 +2,9 @@
 
 namespace LittleGiant\SpinDB\Configuration;
 
-use Exception;
-use Director;
 use Convert;
+use Director;
+use Exception;
 use SS_Datetime;
 
 class RotateConfig
@@ -17,7 +17,7 @@ class RotateConfig
      *
      * @return array
      */
-    protected static function getFixedArgs(): array
+    protected static function getFixedArgs()
     {
         return [
             'basepath' => Convert::raw2htmlid(BASE_PATH),
@@ -31,7 +31,7 @@ class RotateConfig
      *
      * @return array
      */
-    public static function getCurrentArgs(): array
+    public static function getCurrentArgs()
     {
         return [
             'date' => SS_Datetime::now()->Format('Y-m-d'),
@@ -44,7 +44,7 @@ class RotateConfig
      *
      * @return array
      */
-    protected static function getVariableArgPatterns(): array
+    protected static function getVariableArgPatterns()
     {
         return [
             'date' => '(?<date>\d{4}-\d{2}-\d{2})',
@@ -57,7 +57,7 @@ class RotateConfig
      *
      * @return string Cron pattern
      */
-    public static function schedule(): string
+    public static function schedule()
     {
         return defined('SPINDB_SCHEDULE') ? SPINDB_SCHEDULE : '0 2 * * *';
     }
@@ -69,7 +69,7 @@ class RotateConfig
      * @return string
      * @throws Exception
      */
-    public static function path($arguments = []): string
+    public static function path($arguments = [])
     {
         $arguments = array_merge(self::getFixedArgs(), $arguments);
         $pattern = defined('SPINDB_PATH') ? SPINDB_PATH : '{baseurl}/db_{date}{ext}';
@@ -95,7 +95,7 @@ class RotateConfig
      * @return array|null
      * @throws Exception
      */
-    public static function parse($path): ?array
+    public static function parse($path)
     {
         // Get path as an expression, adding in variables as matching groups
         $basePattern = self::path();
@@ -127,7 +127,7 @@ class RotateConfig
      *
      * @return string|null
      */
-    public static function bucket(): ?string
+    public static function bucket()
     {
         return defined('SPINDB_AWS_S3_BUCKET') ? SPINDB_AWS_S3_BUCKET : null;
     }
@@ -137,7 +137,7 @@ class RotateConfig
      *
      * @return string
      */
-    public static function region(): ?string
+    public static function region()
     {
         return defined('SPINDB_AWS_REGION') ? SPINDB_AWS_REGION : null;
     }
@@ -147,7 +147,7 @@ class RotateConfig
      *
      * @return string
      */
-    public static function accesKeyID(): ?string
+    public static function accesKeyID()
     {
         return defined('SPINDB_AWS_ACCESS_KEY_ID') ? SPINDB_AWS_ACCESS_KEY_ID : null;
     }
@@ -157,7 +157,7 @@ class RotateConfig
      *
      * @return string
      */
-    public static function secretAccessKey(): ?string
+    public static function secretAccessKey()
     {
         return defined('SPINDB_AWS_SECRET_ACCESS_KEY') ? SPINDB_AWS_SECRET_ACCESS_KEY : null;
     }
@@ -167,7 +167,7 @@ class RotateConfig
      *
      * @return string
      */
-    public static function profile(): ?string
+    public static function profile()
     {
         return defined('SPINDB_AWS_PROFILE') ? SPINDB_AWS_PROFILE : null;
     }
@@ -177,7 +177,7 @@ class RotateConfig
      *
      * @return int
      */
-    public static function keepDaily(): int
+    public static function keepDaily()
     {
         return self::getNumeric('SPINDB_KEEP_DAILY', 7);
     }
@@ -187,7 +187,7 @@ class RotateConfig
      *
      * @return int
      */
-    public static function keepWeekly(): int
+    public static function keepWeekly()
     {
         return self::getNumeric('SPINDB_KEEP_WEEKLY', 0);
     }
@@ -197,7 +197,7 @@ class RotateConfig
      *
      * @return int
      */
-    public static function keepWeeklyDay(): int
+    public static function keepWeeklyDay()
     {
         return self::getNumeric('SPINDB_KEEP_WEEKLY_DAY', 0);
     }
@@ -207,7 +207,7 @@ class RotateConfig
      *
      * @return int
      */
-    public static function keepMonthly(): int
+    public static function keepMonthly()
     {
         return self::getNumeric('SPINDB_KEEP_MONTHLY', 4);
     }
@@ -217,7 +217,7 @@ class RotateConfig
      *
      * @return int
      */
-    public static function keepMonthlyDay(): int
+    public static function keepMonthlyDay()
     {
         return self::getNumeric('SPINDB_KEEP_MONTHLY_DAY', 1);
     }
@@ -227,7 +227,7 @@ class RotateConfig
      *
      * @return int
      */
-    public static function keepYearly(): int
+    public static function keepYearly()
     {
         return self::getNumeric('SPINDB_KEEP_YEARLY', -1);
     }
@@ -237,7 +237,7 @@ class RotateConfig
      *
      * @return int
      */
-    public static function keepYearlyDay(): int
+    public static function keepYearlyDay()
     {
         return self::getNumeric('SPINDB_KEEP_YEARLY', 1);
     }
@@ -245,11 +245,11 @@ class RotateConfig
     /**
      * Get integer value
      *
-     * @param string $var Name of var
+     * @param string $var     Name of var
      * @param int    $default Defaul value if $var isn't provided, or is non-integer
      * @return int
      */
-    protected static function getNumeric(string $var, int $default): int
+    protected static function getNumeric($var, $default)
     {
         $daily = defined($var) ? constant($var) : null;
         if (is_numeric($daily)) {
@@ -264,7 +264,7 @@ class RotateConfig
      *
      * @return string
      */
-    public static function extension(): string
+    public static function extension()
     {
         return 'sql';
     }

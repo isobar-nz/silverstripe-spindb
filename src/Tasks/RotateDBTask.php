@@ -68,7 +68,7 @@ class RotateDBTask extends BuildTask implements CronTask
      * @param string     $date Date to find
      * @return DBBackup|null
      */
-    protected function findFile(array $files, string $date)
+    protected function findFile(array $files, $date)
     {
         foreach ($files as $file) {
             if ($file->matches($date)) {
@@ -120,7 +120,7 @@ class RotateDBTask extends BuildTask implements CronTask
      * @return DBBackup
      * @throws Exception
      */
-    protected function createNewBackup(array $nowParts): DBBackup
+    protected function createNewBackup(array $nowParts)
     {
         $this->message("Creating backup for {$nowParts['date']} at {$nowParts['time']}");
 
@@ -154,7 +154,7 @@ class RotateDBTask extends BuildTask implements CronTask
      * @param string     $date Current date time
      * @throws Exception
      */
-    protected function rotateBackups(array $files, string $date)
+    protected function rotateBackups(array $files, $date)
     {
         $this->message("Rotating logs");
 

@@ -4,7 +4,6 @@ namespace LittleGiant\SpinDB\Storage;
 
 use Aws\Result;
 use Aws\S3\S3Client;
-use Debug;
 use Exception;
 use Injector;
 use LittleGiant\SpinDB\Configuration\RotateConfig;
@@ -85,7 +84,7 @@ class RotateStorage extends Object
      * Add a new backup to the store
      *
      * @param string $localPath Local path containing the file
-     * @param string $key Key to use
+     * @param string $key       Key to use
      * @return Result
      * @throws Exception
      */

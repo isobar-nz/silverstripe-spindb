@@ -78,7 +78,7 @@ class DBBackup
      * @return string
      * @throws Exception
      */
-    public function getKey(): string
+    public function getKey()
     {
         $parts = [
             'date' => $this->getDate(),
@@ -93,7 +93,7 @@ class DBBackup
      * @param string $date
      * @return bool
      */
-    public function matches($date): bool
+    public function matches($date)
     {
         return strtotime($this->date) === strtotime($date);
     }
@@ -105,7 +105,7 @@ class DBBackup
      * @return bool
      * @throws Exception
      */
-    public function requirePurging(string $today): bool
+    public function requirePurging($today)
     {
         // Always keep current date
         if ($this->matches($today)) {
@@ -133,7 +133,7 @@ class DBBackup
      * @return bool
      * @throws Exception
      */
-    protected function isDaily(string $today): bool
+    protected function isDaily($today)
     {
         // Check if we keep any daily records
         $keepDaily = RotateConfig::keepDaily();
@@ -151,7 +151,7 @@ class DBBackup
      * @return bool
      * @throws Exception
      */
-    protected function isWeekly(string $today): bool
+    protected function isWeekly($today)
     {
         // Check if we keep any weekly records
         $keepWeekly = RotateConfig::keepWeekly();
@@ -175,7 +175,7 @@ class DBBackup
      * @return bool
      * @throws Exception
      */
-    protected function isMonthly(string $today): bool
+    protected function isMonthly($today)
     {
         // Check if we keep any weekly records
         $keepMonthly = RotateConfig::keepMonthly();
@@ -199,7 +199,7 @@ class DBBackup
      * @return bool
      * @throws Exception
      */
-    protected function isYearly(string $today): bool
+    protected function isYearly($today)
     {
         // Check if we keep any weekly records
         $keepYearly = RotateConfig::keepYearly();
@@ -223,7 +223,7 @@ class DBBackup
      * @return bool True if the date is newer than (but not equal to) than the given age
      * @throws Exception
      */
-    protected function isNewerThan($date, $age, $units): bool
+    protected function isNewerThan($date, $age, $units)
     {
         // Negative ranges (e.g. -1 weekly backups) means there is no max age
         if ($age < 0) {
