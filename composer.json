@@ -4,12 +4,12 @@
     "license": "BSD-3-Clause",
     "description": "Backup DB periodically and backup to AWS S3 storage with rotation",
     "require": {
-        "php": ">=5.6",
-        "silverstripe/framework": "^3.1",
+        "php": "^7.1",
+        "silverstripe/framework": "^3.6",
         "silverstripe/crontask": "^1.2.0",
         "aws/aws-sdk-php": "^3.69",
         "silverstripe/environmentcheck": "^1.3.0",
-        "spatie/db-dumper": "~1.5.1"
+        "spatie/db-dumper": "^2"
     },
     "authors": [
         {
@@ -19,7 +19,7 @@
     ],
     "extra": {
         "branch-alias": {
-            "dev-ss3": "0.1.x-dev"
+            "dev-ss3-php7": "0.2.x-dev"
         }
     },
     "scripts": {
