@@ -7,9 +7,9 @@ use Aws\S3\S3Client;
 use Exception;
 use Injector;
 use LittleGiant\SpinDB\Configuration\RotateConfig;
-use Object;
+use SS_Object;
 
-class RotateStorage extends Object
+class RotateStorage extends SS_Object
 {
     /**
      * s3 client
