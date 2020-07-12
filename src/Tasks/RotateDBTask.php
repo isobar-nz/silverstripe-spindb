@@ -171,7 +171,7 @@ class RotateDBTask extends BuildTask implements CronTask
             $this->message("Purging {$count} files:");
 
             foreach ($purge as $item) {
-                $this->message(" - Purging {$item->getKey}");
+                $this->message(" - Purging {$item->getKey()}");
                 RotateStorage::singleton()->deleteFile($item->getKey());
             }
         }
